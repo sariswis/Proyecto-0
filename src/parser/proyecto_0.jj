@@ -1,0 +1,147 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */
+
+/**
+ * SECTION 1: PARSER
+ */
+options{  STATIC = true;
+  IGNORE_CASE = true;}PARSER_BEGIN(Parser)
+public class Parser{  public static void main(String args []) throws ParseException  {    Parser parser = new Parser(System.in);    System.out.println("Reading from standard input...");    try    {		parser.program();    }    catch (Exception e)    {       System.out.println("NOK.");       System.out.println(e.getMessage());       parser.ReInit(System.in);    }    catch (Error e)    {       System.out.println("Oops.");       System.out.println(e.getMessage());       break;    }  }}PARSER_END(Parser)
+
+/**
+ * SECTION 2: TOKENS
+ */SKIP :{  " " | "\r" | "\t" | "\n" | "\f"}TOKEN : /* Keywords */{  < ROBOT_R : "robot_r" >
+| < VARS : "vars" >
+| < PROCS : "procs" >}
+
+TOKEN : /* Commands */
+{
+  < assignTo : "assignto" >
+| < goTo : "goto" >
+| < move : "move" >
+| < turn : "turn" >
+| < face : "face" >
+| < put : "put" >
+| < pick : "pick" >
+| < moveToThe : "movetothe" >
+| < moveInDir : "moveindir" >
+| < jumpToThe : "jumptothe" >
+| < jumpInDir : "jumpindir" >
+| < nop : "nop" >
+}
+
+TOKEN : /* Control Structures */
+{
+  < IF : "if" >
+| < THEN : "then" >
+| < ELSE : "else" >
+| < WHILE : "while" >
+| < DO : "do" >
+| < REPEAT : "repeat" >
+}
+
+TOKEN : /* Conditions */
+{
+  < facing : "facing" >
+| < canPut : "canput" >
+| < canPick : "canpick" >
+| < canMoveInDir : "canmoveindir" >
+| < canJumpInDir : "canjumpindir" >
+| < canMoveToThe : "canmovetothe" >
+| < canJumpToThe : "canjumptothe" >
+| < not : "not" >
+}
+
+TOKEN : /* Symbols */
+{
+  < O_BRACKET : "[" >
+| < C_BRACKET : "]" >
+| < COMMA : "," >
+| < COLON : ":" >
+| < SEMICOLON : ";" >
+| < V_BAR : "|" >
+}
+
+TOKEN : /* Variables */
+{
+  < VARIABLE : <NUMBER> | <NAME> >
+| < NUMBER : (<DIGIT>)+ >
+| < NAME : <LETTER> (<ALPHANUM>)* >
+| < TURN_DIR : "left" | "right" | "around" >
+| < ORIENTATION : "north" | "south" | "east" | "west" >
+| < X_OBJECT : "balloons" | "chips" >
+| < DIRECTION : "front" | "right" | "left" | "back" >
+| < #ALPHANUM : <LETTER> | <DIGIT> >
+| < #LETTER   : ["a"-"z","A"-"Z"] >
+| < #DIGIT : ["0"-"9"] >
+}
+
+/**
+ * SECTION 3: PRODUCTION RULES
+ */
+
+void program() : {} {
+	<ROBOT_R> (LOOKAHEAD(3) declaration() procedures() blockInstructions())*
+	<EOF>
+}
+
+void declaration() : {} {
+	<VARS> <NAME> (<COMMA> <NAME>)* <SEMICOLON>
+}
+
+void procedures() : {} {
+  	<PROCS> (procedureDef())+
+}
+
+void procedureDef() : {} {
+	<NAME> <O_BRACKET>
+	<V_BAR> (<NAME> (<COMMA> <NAME>)*)* <V_BAR>
+	instruction() (<SEMICOLON> instruction())*
+	<C_BRACKET>
+}
+
+void blockInstructions() : {} {
+	<O_BRACKET>
+	instruction() (<SEMICOLON> instruction())*
+	<C_BRACKET>
+}
+
+void instruction() : {} {
+	command() | procedureCall() | controlStructure() 
+}
+
+void command() : {} {
+  	//toThe -> Direction, inDir -> Orientation
+	<assignTo> <COLON> <NUMBER> <COMMA> <NAME>
+	| <goTo> <COLON> <VARIABLE> <COMMA> <VARIABLE>
+	| <move> <COLON> <VARIABLE>
+	| <turn> <COLON> <TURN_DIR>
+	| <face> <COLON> <ORIENTATION>
+	| (<put> | <pick>) <COLON> <VARIABLE> <COMMA> <X_OBJECT>
+	| (<moveToThe> | <jumpToThe>) <COLON> <VARIABLE> <COMMA> <DIRECTION>
+	| (<moveInDir> | <jumpInDir>) <COLON> <VARIABLE> <COMMA> <ORIENTATION>
+	| <nop> <COLON>
+}
+
+void procedureCall() : {} {
+	<NAME> <COLON> (<VARIABLE> (<COMMA> <VARIABLE>)*)*
+}
+
+void controlStructure() : {} {
+	<IF> <COLON> condition() <THEN> <COLON> blockInstructions() <ELSE> <COLON> blockInstructions()
+	| <WHILE> <COLON> condition() <DO> <COLON> blockInstructions() 
+	| <REPEAT> <COLON> <VARIABLE> blockInstructions() 
+}
+
+void condition() : {} {
+  	//toThe -> Direction, inDir -> Orientation
+	<facing> <COLON> <ORIENTATION>
+	| (<canPut> | <canPick>) <COLON> <VARIABLE> <COMMA> <X_OBJECT>
+	| (<canMoveInDir> | <canJumpInDir>) <COLON> <VARIABLE> <COMMA> <ORIENTATION>
+	| (<canMoveToThe> | <canJumpToThe>) <COLON> <VARIABLE> <COMMA> <DIRECTION>
+	| <not> <COLON> condition()
+}
+
+
+
