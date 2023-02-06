@@ -34,9 +34,10 @@ void program() throws ParseException {
     jj_consume_token(0);
 }
 
-  static final public void declaration() throws ParseException {
+  static final public void declaration() throws ParseException {Token var;
     jj_consume_token(VARS);
-    jj_consume_token(NAME);
+    var = jj_consume_token(NAME);
+Analyzer.addVariable(var);
     label_1:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -49,7 +50,8 @@ void program() throws ParseException {
         break label_1;
       }
       jj_consume_token(COMMA);
-      jj_consume_token(NAME);
+      var = jj_consume_token(NAME);
+Analyzer.addVariable(var);
     }
     jj_consume_token(SEMICOLON);
 }
@@ -71,8 +73,9 @@ void program() throws ParseException {
     }
 }
 
-  static final public void procedureDef() throws ParseException {
-    jj_consume_token(NAME);
+  static final public void procedureDef() throws ParseException {Token funct; Token var;
+    funct = jj_consume_token(NAME);
+Analyzer.addFunction(funct);
     jj_consume_token(O_BRACKET);
     jj_consume_token(V_BAR);
     label_3:
@@ -86,7 +89,9 @@ void program() throws ParseException {
         jj_la1[2] = jj_gen;
         break label_3;
       }
-      jj_consume_token(NAME);
+      var = jj_consume_token(NAME);
+Analyzer.addVariable(var);
+                Analyzer.addParam(funct, var);
       label_4:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -99,7 +104,9 @@ void program() throws ParseException {
           break label_4;
         }
         jj_consume_token(COMMA);
-        jj_consume_token(NAME);
+        var = jj_consume_token(NAME);
+Analyzer.addVariable(var);
+                Analyzer.addParam(funct, var);
       }
     }
     jj_consume_token(V_BAR);
@@ -175,14 +182,15 @@ void program() throws ParseException {
     }
 }
 
-  static final public void command() throws ParseException {
+  static final public void command() throws ParseException {Token number; Token var;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case assignTo:{
       jj_consume_token(assignTo);
       jj_consume_token(COLON);
-      jj_consume_token(NUMBER);
+      number = jj_consume_token(NUMBER);
       jj_consume_token(COMMA);
-      jj_consume_token(NAME);
+      var = jj_consume_token(NAME);
+Analyzer.assignVariable(number, var);
       break;
       }
     case goTo:{

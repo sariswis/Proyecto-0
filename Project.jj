@@ -127,19 +127,45 @@ void program() : {} {
 	<ROBOT_R> declaration() procedures() blockInstructions() <EOF>
 }
 
-void declaration() : {} {
-	<VARS> <NAME> (<COMMA> <NAME>)* <SEMICOLON>
+void declaration() : {Token var;} {
+	<VARS> 
+	var = <NAME>
+	{
+		Analyzer.addVariable(var);
+	}
+	(<COMMA> var = <NAME>
+	{
+		Analyzer.addVariable(var);
+	}
+	)* 
+	<SEMICOLON>
 }
 
 void procedures() : {} {
   	<PROCS> (procedureDef())+
 }
 
-void procedureDef() : {} {
-	<NAME> <O_BRACKET>
-	<V_BAR> (<NAME> (<COMMA> <NAME>)*)* <V_BAR>
+void procedureDef() : {Token funct; Token var;} {
+	funct = <NAME>
+	{
+		Analyzer.addFunction(funct);
+	}
+	<O_BRACKET>
+	<V_BAR> 
+	( var = <NAME>
+	{
+		Analyzer.addVariable(var);
+		Analyzer.addParam(funct, var);
+	}
+	 (<COMMA> var = <NAME>
+	{
+		Analyzer.addVariable(var);
+		Analyzer.addParam(funct, var);
+	}
+	)*)* 
+	<V_BAR>
 	instruction() (<SEMICOLON> instruction())*
-	<C_BRACKET>
+	<C_BRACKET> 
 }
 
 void blockInstructions() : {} {
@@ -152,9 +178,15 @@ void instruction() : {} {
 	command() | procedureCall() | controlStructure() 
 }
 
-void command() : {} {
+void command() : {Token number; Token var;} {
   	//toThe -> Direction, inDir -> Orientation
-	<assignTo> <COLON> <NUMBER> <COMMA> <NAME>
+	<assignTo> <COLON> 
+	number = <NUMBER> 
+	<COMMA> 
+	var = <NAME> 
+	{
+		Analyzer.assignVariable(number, var);
+	}
 	| <goTo> <COLON> (<NUMBER> | <NAME>) <COMMA> (<NUMBER> | <NAME>)
 	| <move> <COLON> (<NUMBER> | <NAME>)
 	| <turn> <COLON> (<LEFT> | <RIGHT> | <TURN_DIR>)
