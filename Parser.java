@@ -7,17 +7,17 @@ public class Parser implements ParserConstants {
     try
     {
                 parser.program();
-                System.out.println("The program is valid! :)");
+                System.out.println("\nThe program is valid! :)");
     }
     catch (Exception e)
     {
-       System.out.println("An exception ocurred!");
+       System.out.println("\nAn exception ocurred!");
        System.out.println(e.getMessage());
        parser.ReInit(System.in);
     }
     catch (Error e)
     {
-       System.out.println("An error ocurred!");
+       System.out.println("\nAn error ocurred!");
        System.out.println(e.getMessage());
     }
   }
@@ -73,9 +73,8 @@ Analyzer.addVariable(var);
     }
 }
 
-  static final public void procedureDef() throws ParseException {Token funct; Token var;
-    funct = jj_consume_token(NAME);
-Analyzer.addFunction(funct);
+  static final public void procedureDef() throws ParseException {Token function; Token var; int count = 0;
+    function = jj_consume_token(NAME);
     jj_consume_token(O_BRACKET);
     jj_consume_token(V_BAR);
     label_3:
@@ -90,8 +89,7 @@ Analyzer.addFunction(funct);
         break label_3;
       }
       var = jj_consume_token(NAME);
-Analyzer.addVariable(var);
-                Analyzer.addParam(funct, var);
+Analyzer.addParam(var); count++;
       label_4:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -105,8 +103,7 @@ Analyzer.addVariable(var);
         }
         jj_consume_token(COMMA);
         var = jj_consume_token(NAME);
-Analyzer.addVariable(var);
-                Analyzer.addParam(funct, var);
+Analyzer.addParam(var); count++;
       }
     }
     jj_consume_token(V_BAR);
@@ -126,6 +123,7 @@ Analyzer.addVariable(var);
       instruction();
     }
     jj_consume_token(C_BRACKET);
+Analyzer.addFunction(function, count);
 }
 
   static final public void blockInstructions() throws ParseException {
@@ -202,7 +200,8 @@ Analyzer.assignVariable(number, var);
         break;
         }
       case NAME:{
-        jj_consume_token(NAME);
+        var = jj_consume_token(NAME);
+Analyzer.checkVariable(var);
         break;
         }
       default:
@@ -217,7 +216,8 @@ Analyzer.assignVariable(number, var);
         break;
         }
       case NAME:{
-        jj_consume_token(NAME);
+        var = jj_consume_token(NAME);
+Analyzer.checkVariable(var);
         break;
         }
       default:
@@ -236,7 +236,8 @@ Analyzer.assignVariable(number, var);
         break;
         }
       case NAME:{
-        jj_consume_token(NAME);
+        var = jj_consume_token(NAME);
+Analyzer.checkVariable(var);
         break;
         }
       default:
@@ -298,7 +299,8 @@ Analyzer.assignVariable(number, var);
         break;
         }
       case NAME:{
-        jj_consume_token(NAME);
+        var = jj_consume_token(NAME);
+Analyzer.checkVariable(var);
         break;
         }
       default:
@@ -333,7 +335,8 @@ Analyzer.assignVariable(number, var);
         break;
         }
       case NAME:{
-        jj_consume_token(NAME);
+        var = jj_consume_token(NAME);
+Analyzer.checkVariable(var);
         break;
         }
       default:
@@ -385,7 +388,8 @@ Analyzer.assignVariable(number, var);
         break;
         }
       case NAME:{
-        jj_consume_token(NAME);
+        var = jj_consume_token(NAME);
+Analyzer.checkVariable(var);
         break;
         }
       default:
@@ -409,8 +413,8 @@ Analyzer.assignVariable(number, var);
     }
 }
 
-  static final public void procedureCall() throws ParseException {
-    jj_consume_token(NAME);
+  static final public void procedureCall() throws ParseException {Token function; Token var; int count = 0;
+    function = jj_consume_token(NAME);
     jj_consume_token(COLON);
     label_7:
     while (true) {
@@ -430,7 +434,8 @@ Analyzer.assignVariable(number, var);
         break;
         }
       case NAME:{
-        jj_consume_token(NAME);
+        var = jj_consume_token(NAME);
+Analyzer.checkVariable(var);
         break;
         }
       default:
@@ -438,6 +443,7 @@ Analyzer.assignVariable(number, var);
         jj_consume_token(-1);
         throw new ParseException();
       }
+count++;
       label_8:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -456,7 +462,8 @@ Analyzer.assignVariable(number, var);
           break;
           }
         case NAME:{
-          jj_consume_token(NAME);
+          var = jj_consume_token(NAME);
+Analyzer.checkVariable(var);
           break;
           }
         default:
@@ -464,11 +471,13 @@ Analyzer.assignVariable(number, var);
           jj_consume_token(-1);
           throw new ParseException();
         }
+count++;
       }
     }
+Analyzer.checkFunction(function, count);
 }
 
-  static final public void controlStructure() throws ParseException {
+  static final public void controlStructure() throws ParseException {Token var;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case IF:{
       jj_consume_token(IF);
@@ -500,7 +509,8 @@ Analyzer.assignVariable(number, var);
         break;
         }
       case NAME:{
-        jj_consume_token(NAME);
+        var = jj_consume_token(NAME);
+Analyzer.checkVariable(var);
         break;
         }
       default:
@@ -518,7 +528,7 @@ Analyzer.assignVariable(number, var);
     }
 }
 
-  static final public void condition() throws ParseException {
+  static final public void condition() throws ParseException {Token var;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case facing:{
       jj_consume_token(facing);
@@ -549,7 +559,8 @@ Analyzer.assignVariable(number, var);
         break;
         }
       case NAME:{
-        jj_consume_token(NAME);
+        var = jj_consume_token(NAME);
+Analyzer.checkVariable(var);
         break;
         }
       default:
@@ -584,7 +595,8 @@ Analyzer.assignVariable(number, var);
         break;
         }
       case NAME:{
-        jj_consume_token(NAME);
+        var = jj_consume_token(NAME);
+Analyzer.checkVariable(var);
         break;
         }
       default:
@@ -619,7 +631,8 @@ Analyzer.assignVariable(number, var);
         break;
         }
       case NAME:{
-        jj_consume_token(NAME);
+        var = jj_consume_token(NAME);
+Analyzer.checkVariable(var);
         break;
         }
       default:

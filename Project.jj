@@ -22,17 +22,17 @@ public class Parser
     try
     {
 		parser.program();
-		System.out.println("The program is valid! :)");
+		System.out.println("\nThe program is valid! :)");
     }
     catch (Exception e)
     {
-       System.out.println("An exception ocurred!");
+       System.out.println("\nAn exception ocurred!");
        System.out.println(e.getMessage());
        parser.ReInit(System.in);
     }
     catch (Error e)
     {
-       System.out.println("An error ocurred!");
+       System.out.println("\nAn error ocurred!");
        System.out.println(e.getMessage());
     }
   }
@@ -129,15 +129,8 @@ void program() : {} {
 
 void declaration() : {Token var;} {
 	<VARS> 
-	var = <NAME>
-	{
-		Analyzer.addVariable(var);
-	}
-	(<COMMA> var = <NAME>
-	{
-		Analyzer.addVariable(var);
-	}
-	)* 
+	var = <NAME> {Analyzer.addVariable(var);}
+	(<COMMA> var = <NAME> {Analyzer.addVariable(var);})* 
 	<SEMICOLON>
 }
 
@@ -145,27 +138,15 @@ void procedures() : {} {
   	<PROCS> (procedureDef())+
 }
 
-void procedureDef() : {Token funct; Token var;} {
-	funct = <NAME>
-	{
-		Analyzer.addFunction(funct);
-	}
+void procedureDef() : {Token function; Token var; int count = 0;} {
+	function = <NAME>
 	<O_BRACKET>
 	<V_BAR> 
-	( var = <NAME>
-	{
-		Analyzer.addVariable(var);
-		Analyzer.addParam(funct, var);
-	}
-	 (<COMMA> var = <NAME>
-	{
-		Analyzer.addVariable(var);
-		Analyzer.addParam(funct, var);
-	}
-	)*)* 
+	(var = <NAME> {Analyzer.addParam(var); count++;} (<COMMA> var = <NAME> {Analyzer.addParam(var); count++;})*)* 
 	<V_BAR>
 	instruction() (<SEMICOLON> instruction())*
-	<C_BRACKET> 
+	<C_BRACKET>
+	{Analyzer.addFunction(function, count);} 
 }
 
 void blockInstructions() : {} {
@@ -180,39 +161,35 @@ void instruction() : {} {
 
 void command() : {Token number; Token var;} {
   	//toThe -> Direction, inDir -> Orientation
-	<assignTo> <COLON> 
-	number = <NUMBER> 
-	<COMMA> 
-	var = <NAME> 
-	{
-		Analyzer.assignVariable(number, var);
-	}
-	| <goTo> <COLON> (<NUMBER> | <NAME>) <COMMA> (<NUMBER> | <NAME>)
-	| <move> <COLON> (<NUMBER> | <NAME>)
+	<assignTo> <COLON> number = <NUMBER> <COMMA> var = <NAME> {Analyzer.assignVariable(number, var);}
+	| <goTo> <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);}) <COMMA> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);})
+	| <move> <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);})
 	| <turn> <COLON> (<LEFT> | <RIGHT> | <TURN_DIR>)
 	| <face> <COLON> <ORIENTATION>
-	| (<put> | <pick>) <COLON> (<NUMBER> | <NAME>) <COMMA> <X_OBJECT>
-	| (<moveToThe> | <jumpToThe>) <COLON> (<NUMBER> | <NAME>) <COMMA> (<LEFT> | <RIGHT> | <DIRECTION>)
-	| (<moveInDir> | <jumpInDir>) <COLON> (<NUMBER> | <NAME>) <COMMA> <ORIENTATION>
+	| (<put> | <pick>) <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);}) <COMMA> <X_OBJECT>
+	| (<moveToThe> | <jumpToThe>) <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);}) <COMMA> (<LEFT> | <RIGHT> | <DIRECTION>)
+	| (<moveInDir> | <jumpInDir>) <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);}) <COMMA> <ORIENTATION>
 	| <nop> <COLON>
 }
 
-void procedureCall() : {} {
-	<NAME> <COLON> ((<NUMBER> | <NAME>) (<COMMA> (<NUMBER> | <NAME>))*)*
+void procedureCall() : {Token function; Token var; int count = 0;} {
+	function = <NAME> <COLON> 
+	((<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);}) {count++;} (<COMMA> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);}) {count++;})*)*
+	{Analyzer.checkFunction(function, count);}
 }
 
-void controlStructure() : {} {
+void controlStructure() : {Token var;} {
 	<IF> <COLON> condition() <THEN> <COLON> blockInstructions() <ELSE> <COLON> blockInstructions()
 	| <WHILE> <COLON> condition() <DO> <COLON> blockInstructions() 
-	| <REPEAT> <COLON> (<NUMBER> | <NAME>) blockInstructions() 
+	| <REPEAT> <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);}) blockInstructions() 
 }
 
-void condition() : {} {
+void condition() : {Token var;} {
   	//toThe -> Direction, inDir -> Orientation
 	<facing> <COLON> <ORIENTATION>
-	| (<canPut> | <canPick>) <COLON> (<NUMBER> | <NAME>) <COMMA> <X_OBJECT>
-	| (<canMoveInDir> | <canJumpInDir>) <COLON> (<NUMBER> | <NAME>) <COMMA> <ORIENTATION>
-	| (<canMoveToThe> | <canJumpToThe>) <COLON> (<NUMBER> | <NAME>) <COMMA> (<LEFT> | <RIGHT> | <DIRECTION>)
+	| (<canPut> | <canPick>) <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);}) <COMMA> <X_OBJECT>
+	| (<canMoveInDir> | <canJumpInDir>) <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);}) <COMMA> <ORIENTATION>
+	| (<canMoveToThe> | <canJumpToThe>) <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);}) <COMMA> (<LEFT> | <RIGHT> | <DIRECTION>)
 	| <not> <COLON> condition()
 }
 

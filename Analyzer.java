@@ -4,76 +4,72 @@ import java.util.ArrayList;
 
 class Analyzer
 {
-    private static HashMap variables = new HashMap();
+    private static HashMap<String, String> variables = new HashMap<String, String>();
 	private static HashMap functions = new HashMap();
+	private static ArrayList<String> params = new ArrayList<String>();
 
     public static void addVariable(Token token)
 	{
 		String def = "";
         String image = token.image.toLowerCase();
         variables.put(image, def);
-        System.out.println(image);
+        System.out.println("New variable: " + image);
+	}
+
+	public static void assignVariable(Token number, Token token)
+	{
+        String num = number.image.toLowerCase();
+        String image = token.image.toLowerCase();
+        variables.put(image, num);
+        System.out.println("Assignment: " + image);
+	}
+
+    public static void addFunction(Token token, int count)
+	{
+        String image = token.image.toLowerCase();
+		functions.put(image, count);
+        System.out.println("New function: " + image);
+	}
+
+	public static void addParam(Token token)
+	{
+        String image = token.image.toLowerCase();
+        params.add(image);
+        System.out.println("New param: " + image);
 	}
     
-    public static void addFunction(Token token)
-	{
-        String image = token.image.toLowerCase();
-        ArrayList params = new ArrayList();
-		functions.put(image, params);
-        System.out.println(image);
-	}
-
-    public static String addParam(Token token, Token param)
-	{
-        String image = token.image.toLowerCase();
-        String p = param.image.toLowerCase();
-        try
-        {
-            ArrayList list = (ArrayList) functions.get(image);
-            list.add(p);
-            System.out.println(p);
-            return "";
-        }
-        catch(Exception e)
-		{
-			return "Error: The function " + token.image + " is not defined\nLine: " + token.beginLine;
-		}
-	}
-
-    public static void assignVariable(Token number, Token token)
-	{
-        String image = token.image.toLowerCase();
-        String num = number.image.toLowerCase();
-        variables.put(image, num);
-        System.out.println(image);
-	}
-
 	public static String checkVariable(Token token)
 	{
-		try
-		{
-			int exists = (Integer) variables.get(token.image);
-			return "";
+		String message = "";
+		boolean p_exists = params.contains(token.image);
+		if (!p_exists){
+			boolean v_exists = variables.containsKey(token.image);
+			if (v_exists){
+				String value = (String) variables.get(token.image);
+				if (value == ""){
+					message = "Warning: The variable " + token.image + " has no value\nLine: " + token.beginLine;
+				}
+			} else {
+				message = "Error: The variable " + token.image + " is not defined\nLine: " + token.beginLine;
+			}
 		}
-		catch(Exception e)
-		{
-			return "Error: The variable " + token.image + " is not defined\nLine: " + token.beginLine;
-		}
+		return message;
 	}
 
-    public static String checkFunction(Token token)
+    public static String checkFunction(Token token, int count)
 	{
-		try
-		{
-			int exists = (Integer) functions.get(token.image);
-			return "";
+		String message = "";
+		boolean exists = functions.containsKey(token.image);
+		if (exists){
+			int value = (Integer) functions.get(token.image);
+			if (value != count){
+				message = "Error: The function must have " + value + " params, not" + count + "\nLine: " + token.beginLine;
+			}
+		} else {
+			message = "Error: The function " + token.image + " is not defined\nLine: " + token.beginLine;
 		}
-		catch(Exception e)
-		{
-			return "Error: The function " + token.image + " is not defined\nLine: " + token.beginLine;
-		}
+		return message;
 	}
-
  }
   
   
