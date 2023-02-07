@@ -1,8 +1,4 @@
 /**
- * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
- */
-
-/**
  * SECTION 1: PARSER
  */
 
@@ -23,6 +19,7 @@ public class Parser
     {
 		parser.program();
 		System.out.println("\nThe program is valid! :)");
+		Analyzer.printInfo();
     }
     catch (Exception e)
     {
@@ -109,7 +106,7 @@ TOKEN : /* Variables */
 {
   < LEFT : "left" >
 | < RIGHT : "right" >
-| < TURN_DIR : "around" >
+| < AROUND : "around" >
 | < ORIENTATION : "north" | "south" | "east" | "west" >
 | < X_OBJECT : "balloons" | "chips" >
 | < DIRECTION : "front" | "back" >
@@ -164,7 +161,7 @@ void command() : {Token number; Token var;} {
 	<assignTo> <COLON> number = <NUMBER> <COMMA> var = <NAME> {Analyzer.assignVariable(number, var);}
 	| <goTo> <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);}) <COMMA> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);})
 	| <move> <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);})
-	| <turn> <COLON> (<LEFT> | <RIGHT> | <TURN_DIR>)
+	| <turn> <COLON> (<LEFT> | <RIGHT> | <AROUND>)
 	| <face> <COLON> <ORIENTATION>
 	| (<put> | <pick>) <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);}) <COMMA> <X_OBJECT>
 	| (<moveToThe> | <jumpToThe>) <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);}) <COMMA> (<LEFT> | <RIGHT> | <DIRECTION>)

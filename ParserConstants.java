@@ -83,7 +83,7 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int RIGHT = 42;
   /** RegularExpression Id. */
-  int TURN_DIR = 43;
+  int AROUND = 43;
   /** RegularExpression Id. */
   int ORIENTATION = 44;
   /** RegularExpression Id. */

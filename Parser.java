@@ -8,6 +8,7 @@ public class Parser implements ParserConstants {
     {
                 parser.program();
                 System.out.println("\nThe program is valid! :)");
+                Analyzer.printInfo();
     }
     catch (Exception e)
     {
@@ -259,8 +260,8 @@ Analyzer.checkVariable(var);
         jj_consume_token(RIGHT);
         break;
         }
-      case TURN_DIR:{
-        jj_consume_token(TURN_DIR);
+      case AROUND:{
+        jj_consume_token(AROUND);
         break;
         }
       default:

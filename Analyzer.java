@@ -5,70 +5,65 @@ import java.util.ArrayList;
 class Analyzer
 {
     private static HashMap<String, String> variables = new HashMap<String, String>();
-	private static HashMap functions = new HashMap();
+	private static HashMap<String, Integer> functions = new HashMap<String, Integer>();
 	private static ArrayList<String> params = new ArrayList<String>();
 
-    public static void addVariable(Token token)
-	{
+    public static void addVariable(Token token){
 		String def = "";
         String image = token.image.toLowerCase();
         variables.put(image, def);
-        System.out.println("New variable: " + image);
 	}
 
-	public static void assignVariable(Token number, Token token)
-	{
-        String num = number.image.toLowerCase();
+    public static void addFunction(Token token, int count){
+		Integer c = count;
         String image = token.image.toLowerCase();
-        variables.put(image, num);
-        System.out.println("Assignment: " + image);
+		functions.put(image, c);
 	}
 
-    public static void addFunction(Token token, int count)
-	{
-        String image = token.image.toLowerCase();
-		functions.put(image, count);
-        System.out.println("New function: " + image);
-	}
-
-	public static void addParam(Token token)
-	{
+	public static void addParam(Token token){
         String image = token.image.toLowerCase();
         params.add(image);
-        System.out.println("New param: " + image);
-	}
-    
-	public static String checkVariable(Token token)
-	{
-		String message = "";
-		boolean p_exists = params.contains(token.image);
-		if (!p_exists){
-			boolean v_exists = variables.containsKey(token.image);
-			if (v_exists){
-				String value = (String) variables.get(token.image);
-				if (value == ""){
-					message = "Warning: The variable " + token.image + " has no value\nLine: " + token.beginLine;
-				}
-			} else {
-				message = "Error: The variable " + token.image + " is not defined\nLine: " + token.beginLine;
-			}
-		}
-		return message;
 	}
 
-    public static String checkFunction(Token token, int count)
-	{
-		String message = "";
-		boolean exists = functions.containsKey(token.image);
-		if (exists){
+	public static void assignVariable(Token number, Token token){
+        String num = number.image.toLowerCase();
+        String image = token.image.toLowerCase();
+		if (variables.containsKey(image)){
+			variables.put(image, num);
+		} else {
+			throw new Error("Couldn't assign " + number.image + " to undefined variable " + token.image + "\nLine: " + token.beginLine + " Column: " + token.beginColumn);
+		}
+	}
+    
+	public static void checkVariable(Token token){
+		if (!params.contains(token.image)){
+			if (variables.containsKey(token.image)){
+				String value = (String) variables.get(token.image);
+				if (value == ""){
+					throw new Error("The variable " + token.image + " has no value\nLine: " + token.beginLine + " Column: " + token.beginColumn);
+				}
+			} else {
+				throw new Error("The variable " + token.image + " is not defined\nLine: " + token.beginLine + " Column: " + token.beginColumn);
+			}
+		}
+	}
+
+    public static void checkFunction(Token token, int count){
+		if (functions.containsKey(token.image)){
 			int value = (Integer) functions.get(token.image);
 			if (value != count){
-				message = "Error: The function must have " + value + " params, not" + count + "\nLine: " + token.beginLine;
+				throw new Error("The function must have " + value + " params, not " + count + "\nLine: " + token.beginLine + " Column: " + token.beginColumn);
 			}
 		} else {
-			message = "Error: The function " + token.image + " is not defined\nLine: " + token.beginLine;
+			throw new Error("The function " + token.image + " is not defined\nLine: " + token.beginLine + " Column: " + token.beginColumn);
 		}
-		return message;
+	}
+
+	public static void printInfo(){
+		System.out.println("\nPARSER SUMMARY");
+		System.out.println("Variables: " + variables);
+		System.out.println("Functions: " + functions);
+		System.out.println("Params: " + params);
 	}
  }
   
