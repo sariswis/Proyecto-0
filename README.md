@@ -6,4 +6,5 @@ Sitúese en la carpeta y escriba en la CMD:
 2. javac *.java
 3. java Parser < Example.txt
 
-![1675808133453](image/README/1675808133453.png)
+![image](https://user-images.githubusercontent.com/101780188/217379733-1ab51724-f7aa-4548-8fcc-b6270591b91a.png)
+
