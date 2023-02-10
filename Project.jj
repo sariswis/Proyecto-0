@@ -121,7 +121,7 @@ TOKEN : /* Variables */
  */
 
 void program() : {} {
-	<ROBOT_R> declaration() procedures() blockInstructions() <EOF>
+	<ROBOT_R> (declaration() procedures())? blockInstructions() <EOF>
 }
 
 void declaration() : {Token var;} {
@@ -176,9 +176,9 @@ void procedureCall() : {Token function; Token var; int count = 0;} {
 }
 
 void controlStructure() : {Token var;} {
-	<IF> <COLON> condition() <THEN> <COLON> blockInstructions() <ELSE> <COLON> blockInstructions()
-	| <WHILE> <COLON> condition() <DO> <COLON> blockInstructions() 
-	| <REPEAT> <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);}) blockInstructions() 
+	<IF> <COLON> condition() <THEN> <COLON> (blockInstructions() | instruction()) <ELSE> <COLON> (blockInstructions() | instruction())
+	| <WHILE> <COLON> condition() <DO> <COLON> (blockInstructions() | instruction()) 
+	| <REPEAT> <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);}) (blockInstructions() | instruction()) 
 }
 
 void condition() : {Token var;} {

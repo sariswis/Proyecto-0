@@ -29,8 +29,16 @@ public class Parser implements ParserConstants {
   static final public 
 void program() throws ParseException {
     jj_consume_token(ROBOT_R);
-    declaration();
-    procedures();
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case VARS:{
+      declaration();
+      procedures();
+      break;
+      }
+    default:
+      jj_la1[0] = jj_gen;
+      ;
+    }
     blockInstructions();
     jj_consume_token(0);
 }
@@ -47,7 +55,7 @@ Analyzer.addVariable(var);
         break;
         }
       default:
-        jj_la1[0] = jj_gen;
+        jj_la1[1] = jj_gen;
         break label_1;
       }
       jj_consume_token(COMMA);
@@ -68,7 +76,7 @@ Analyzer.addVariable(var);
         break;
         }
       default:
-        jj_la1[1] = jj_gen;
+        jj_la1[2] = jj_gen;
         break label_2;
       }
     }
@@ -86,7 +94,7 @@ Analyzer.addVariable(var);
         break;
         }
       default:
-        jj_la1[2] = jj_gen;
+        jj_la1[3] = jj_gen;
         break label_3;
       }
       var = jj_consume_token(NAME);
@@ -99,7 +107,7 @@ Analyzer.addParam(var); count++;
           break;
           }
         default:
-          jj_la1[3] = jj_gen;
+          jj_la1[4] = jj_gen;
           break label_4;
         }
         jj_consume_token(COMMA);
@@ -117,7 +125,7 @@ Analyzer.addParam(var); count++;
         break;
         }
       default:
-        jj_la1[4] = jj_gen;
+        jj_la1[5] = jj_gen;
         break label_5;
       }
       jj_consume_token(SEMICOLON);
@@ -138,7 +146,7 @@ Analyzer.addFunction(function, count);
         break;
         }
       default:
-        jj_la1[5] = jj_gen;
+        jj_la1[6] = jj_gen;
         break label_6;
       }
       jj_consume_token(SEMICOLON);
@@ -175,7 +183,7 @@ Analyzer.addFunction(function, count);
       break;
       }
     default:
-      jj_la1[6] = jj_gen;
+      jj_la1[7] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -206,7 +214,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[7] = jj_gen;
+        jj_la1[8] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -222,7 +230,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[8] = jj_gen;
+        jj_la1[9] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -242,7 +250,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[9] = jj_gen;
+        jj_la1[10] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -265,7 +273,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[10] = jj_gen;
+        jj_la1[11] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -289,7 +297,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[11] = jj_gen;
+        jj_la1[12] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -305,7 +313,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[12] = jj_gen;
+        jj_la1[13] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -325,7 +333,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[13] = jj_gen;
+        jj_la1[14] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -341,7 +349,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[14] = jj_gen;
+        jj_la1[15] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -360,7 +368,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[15] = jj_gen;
+        jj_la1[16] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -378,7 +386,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[16] = jj_gen;
+        jj_la1[17] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -394,7 +402,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[17] = jj_gen;
+        jj_la1[18] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -408,7 +416,7 @@ Analyzer.checkVariable(var);
       break;
       }
     default:
-      jj_la1[18] = jj_gen;
+      jj_la1[19] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -426,7 +434,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[19] = jj_gen;
+        jj_la1[20] = jj_gen;
         break label_7;
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -440,7 +448,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[20] = jj_gen;
+        jj_la1[21] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -453,7 +461,7 @@ count++;
           break;
           }
         default:
-          jj_la1[21] = jj_gen;
+          jj_la1[22] = jj_gen;
           break label_8;
         }
         jj_consume_token(COMMA);
@@ -468,7 +476,7 @@ Analyzer.checkVariable(var);
           break;
           }
         default:
-          jj_la1[22] = jj_gen;
+          jj_la1[23] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
@@ -486,10 +494,66 @@ Analyzer.checkFunction(function, count);
       condition();
       jj_consume_token(THEN);
       jj_consume_token(COLON);
-      blockInstructions();
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case O_BRACKET:{
+        blockInstructions();
+        break;
+        }
+      case assignTo:
+      case goTo:
+      case move:
+      case turn:
+      case face:
+      case put:
+      case pick:
+      case moveToThe:
+      case moveInDir:
+      case jumpToThe:
+      case jumpInDir:
+      case nop:
+      case IF:
+      case WHILE:
+      case REPEAT:
+      case NAME:{
+        instruction();
+        break;
+        }
+      default:
+        jj_la1[24] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
       jj_consume_token(ELSE);
       jj_consume_token(COLON);
-      blockInstructions();
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case O_BRACKET:{
+        blockInstructions();
+        break;
+        }
+      case assignTo:
+      case goTo:
+      case move:
+      case turn:
+      case face:
+      case put:
+      case pick:
+      case moveToThe:
+      case moveInDir:
+      case jumpToThe:
+      case jumpInDir:
+      case nop:
+      case IF:
+      case WHILE:
+      case REPEAT:
+      case NAME:{
+        instruction();
+        break;
+        }
+      default:
+        jj_la1[25] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
       break;
       }
     case WHILE:{
@@ -498,7 +562,35 @@ Analyzer.checkFunction(function, count);
       condition();
       jj_consume_token(DO);
       jj_consume_token(COLON);
-      blockInstructions();
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case O_BRACKET:{
+        blockInstructions();
+        break;
+        }
+      case assignTo:
+      case goTo:
+      case move:
+      case turn:
+      case face:
+      case put:
+      case pick:
+      case moveToThe:
+      case moveInDir:
+      case jumpToThe:
+      case jumpInDir:
+      case nop:
+      case IF:
+      case WHILE:
+      case REPEAT:
+      case NAME:{
+        instruction();
+        break;
+        }
+      default:
+        jj_la1[26] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
       break;
       }
     case REPEAT:{
@@ -515,15 +607,43 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[23] = jj_gen;
+        jj_la1[27] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
-      blockInstructions();
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case O_BRACKET:{
+        blockInstructions();
+        break;
+        }
+      case assignTo:
+      case goTo:
+      case move:
+      case turn:
+      case face:
+      case put:
+      case pick:
+      case moveToThe:
+      case moveInDir:
+      case jumpToThe:
+      case jumpInDir:
+      case nop:
+      case IF:
+      case WHILE:
+      case REPEAT:
+      case NAME:{
+        instruction();
+        break;
+        }
+      default:
+        jj_la1[28] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
       break;
       }
     default:
-      jj_la1[24] = jj_gen;
+      jj_la1[29] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -549,7 +669,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[25] = jj_gen;
+        jj_la1[30] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -565,7 +685,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[26] = jj_gen;
+        jj_la1[31] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -585,7 +705,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[27] = jj_gen;
+        jj_la1[32] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -601,7 +721,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[28] = jj_gen;
+        jj_la1[33] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -621,7 +741,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[29] = jj_gen;
+        jj_la1[34] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -637,7 +757,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[30] = jj_gen;
+        jj_la1[35] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -656,7 +776,7 @@ Analyzer.checkVariable(var);
         break;
         }
       default:
-        jj_la1[31] = jj_gen;
+        jj_la1[36] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -669,7 +789,7 @@ Analyzer.checkVariable(var);
       break;
       }
     default:
-      jj_la1[32] = jj_gen;
+      jj_la1[37] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -685,7 +805,7 @@ Analyzer.checkVariable(var);
   static public Token jj_nt;
   static private int jj_ntk;
   static private int jj_gen;
-  static final private int[] jj_la1 = new int[33];
+  static final private int[] jj_la1 = new int[38];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -693,10 +813,10 @@ Analyzer.checkVariable(var);
 	   jj_la1_init_1();
 	}
 	private static void jj_la1_init_0() {
-	   jj_la1_0 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x53ffe00,0x0,0x0,0x0,0x0,0xc000,0x0,0x50000,0x0,0x0,0xa0000,0x0,0x1ffe00,0x0,0x0,0x0,0x0,0x0,0x5200000,0x30000000,0x0,0xc0000000,0x0,0x0,0x0,0x0,0xf8000000,};
+	   jj_la1_0 = new int[] {0x80,0x0,0x0,0x0,0x0,0x0,0x0,0x53ffe00,0x0,0x0,0x0,0x0,0xc000,0x0,0x50000,0x0,0x0,0xa0000,0x0,0x1ffe00,0x0,0x0,0x0,0x0,0x53ffe00,0x53ffe00,0x53ffe00,0x0,0x53ffe00,0x5200000,0x30000000,0x0,0xc0000000,0x0,0x0,0x0,0x0,0xf8000000,};
 	}
 	private static void jj_la1_init_1() {
-	   jj_la1_1 = new int[] {0x20,0x10000,0x10000,0x20,0x80,0x80,0x10000,0x18000,0x18000,0x18000,0xe00,0x0,0x18000,0x0,0x18000,0x4600,0x0,0x18000,0x0,0x18000,0x18000,0x20,0x18000,0x18000,0x0,0x0,0x18000,0x0,0x18000,0x3,0x18000,0x4600,0x7,};
+	   jj_la1_1 = new int[] {0x0,0x20,0x10000,0x10000,0x20,0x80,0x80,0x10000,0x18000,0x18000,0x18000,0xe00,0x0,0x18000,0x0,0x18000,0x4600,0x0,0x18000,0x0,0x18000,0x18000,0x20,0x18000,0x10008,0x10008,0x10008,0x18000,0x10008,0x0,0x0,0x18000,0x0,0x18000,0x3,0x18000,0x4600,0x7,};
 	}
 
   /** Constructor with InputStream. */
@@ -717,7 +837,7 @@ Analyzer.checkVariable(var);
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 33; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 38; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -731,7 +851,7 @@ Analyzer.checkVariable(var);
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 33; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 38; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -748,7 +868,7 @@ Analyzer.checkVariable(var);
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 33; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 38; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -766,7 +886,7 @@ Analyzer.checkVariable(var);
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 33; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 38; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -782,7 +902,7 @@ Analyzer.checkVariable(var);
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 33; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 38; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -791,7 +911,7 @@ Analyzer.checkVariable(var);
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 33; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 38; i++) jj_la1[i] = -1;
   }
 
   static private Token jj_consume_token(int kind) throws ParseException {
@@ -847,7 +967,7 @@ Analyzer.checkVariable(var);
 	   la1tokens[jj_kind] = true;
 	   jj_kind = -1;
 	 }
-	 for (int i = 0; i < 33; i++) {
+	 for (int i = 0; i < 38; i++) {
 	   if (jj_la1[i] == jj_gen) {
 		 for (int j = 0; j < 32; j++) {
 		   if ((jj_la1_0[i] & (1<<j)) != 0) {

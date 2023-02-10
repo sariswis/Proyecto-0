@@ -7,7 +7,7 @@ goNorth [| |
 while : canMovetoThe : 1 , front do: [ moveInDir : 1 , north ]
 ]
 goWest [ | | if : canMoveInDir : 1 , west then: [ MoveInDir : 1 ,
-west ] else : [nop :] ]
+west ] else : nop: ]
 [
 goTo : 3 , 3;
 putcb : 2 ,1
