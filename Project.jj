@@ -121,7 +121,7 @@ TOKEN : /* Variables */
  */
 
 void program() : {} {
-	<ROBOT_R> (declaration() procedures())? blockInstructions() <EOF>
+	<ROBOT_R> (declaration())? (procedures())? blockInstructionsF() <EOF>
 }
 
 void declaration() : {Token var;} {
@@ -189,6 +189,52 @@ void condition() : {Token var;} {
 	| (<canMoveToThe> | <canJumpToThe>) <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariable(var);}) <COMMA> (<LEFT> | <RIGHT> | <DIRECTION>)
 	| <not> <COLON> condition()
 }
+
+void blockInstructionsF() : {} {
+	<O_BRACKET>
+	instructionF() (<SEMICOLON> instructionF())*
+	<C_BRACKET>
+}
+
+void instructionF() : {} {
+	commandF() | procedureCallF() | controlStructureF() 
+}
+
+void commandF() : {Token number; Token var;} {
+  	//toThe -> Direction, inDir -> Orientation
+	<assignTo> <COLON> number = <NUMBER> <COMMA> var = <NAME> {Analyzer.assignVariable(number, var);}
+	| <goTo> <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariableF(var);}) <COMMA> (<NUMBER> | var = <NAME> {Analyzer.checkVariableF(var);})
+	| <move> <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariableF(var);})
+	| <turn> <COLON> (<LEFT> | <RIGHT> | <AROUND>)
+	| <face> <COLON> <ORIENTATION>
+	| (<put> | <pick>) <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariableF(var);}) <COMMA> <X_OBJECT>
+	| (<moveToThe> | <jumpToThe>) <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariableF(var);}) <COMMA> (<LEFT> | <RIGHT> | <DIRECTION>)
+	| (<moveInDir> | <jumpInDir>) <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariableF(var);}) <COMMA> <ORIENTATION>
+	| <nop> <COLON>
+}
+
+void procedureCallF() : {Token function; Token var; int count = 0;} {
+	function = <NAME> <COLON> 
+	((<NUMBER> | var = <NAME> {Analyzer.checkVariableF(var);}) {count++;} (<COMMA> (<NUMBER> | var = <NAME> {Analyzer.checkVariableF(var);}) {count++;})*)*
+	{Analyzer.checkFunction(function, count);}
+}
+
+void controlStructureF() : {Token var;} {
+	<IF> <COLON> conditionF() <THEN> <COLON> (blockInstructionsF() | instructionF()) <ELSE> <COLON> (blockInstructionsF() | instructionF())
+	| <WHILE> <COLON> conditionF() <DO> <COLON> (blockInstructionsF() | instructionF()) 
+	| <REPEAT> <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariableF(var);}) (blockInstructionsF() | instructionF()) 
+}
+
+void conditionF() : {Token var;} {
+  	//toThe -> Direction, inDir -> Orientation
+	<facing> <COLON> <ORIENTATION>
+	| (<canPut> | <canPick>) <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariableF(var);}) <COMMA> <X_OBJECT>
+	| (<canMoveInDir> | <canJumpInDir>) <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariableF(var);}) <COMMA> <ORIENTATION>
+	| (<canMoveToThe> | <canJumpToThe>) <COLON> (<NUMBER> | var = <NAME> {Analyzer.checkVariableF(var);}) <COMMA> (<LEFT> | <RIGHT> | <DIRECTION>)
+	| <not> <COLON> conditionF()
+}
+
+
 
 
 

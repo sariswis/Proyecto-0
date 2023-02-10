@@ -48,6 +48,17 @@ class Analyzer
 		}
 	}
 
+	public static void checkVariableF(Token token){
+		if (variables.containsKey(token.image)){
+			String value = (String) variables.get(token.image);
+			if (value == ""){
+				throw new Error("The variable " + token.image + " has no value\nLine: " + token.beginLine + " Column: " + token.beginColumn);
+			}
+		} else {
+			throw new Error("The variable " + token.image + " is not defined\nLine: " + token.beginLine + " Column: " + token.beginColumn);
+		}
+	}
+
     public static void checkFunction(Token token, int count){
 		if (functions.containsKey(token.image)){
 			int value = (Integer) functions.get(token.image);
